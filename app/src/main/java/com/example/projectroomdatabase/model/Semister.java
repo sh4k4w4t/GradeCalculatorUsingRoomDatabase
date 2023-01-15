@@ -12,6 +12,9 @@ public class Semister {
     public String semisterName;
     public double semisterCredit;
 
+    public Semister() {
+    }
+
     public Semister(String semisterName, double semisterCredit) {
         this.semisterName = semisterName;
         this.semisterCredit = semisterCredit;

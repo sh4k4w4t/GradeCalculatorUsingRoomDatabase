@@ -12,9 +12,12 @@ public class Course {
     public double courseCredit;
     public int semisterId;
 
+    public Course() {
+    }
+
     public Course(int id, String courseName, double courseGpa, double courseCredit, int semisterId) {
         this.id = id;
-        CourseName = courseName;
+        this.CourseName = courseName;
         this.courseGpa = courseGpa;
         this.courseCredit = courseCredit;
         this.semisterId = semisterId;
