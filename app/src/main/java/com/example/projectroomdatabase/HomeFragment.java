@@ -13,12 +13,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.projectroomdatabase.Repository.GradeRepository;
 import com.example.projectroomdatabase.databinding.FragmentHomeBinding;
+import com.example.projectroomdatabase.model.Semister;
 import com.google.android.material.snackbar.Snackbar;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    GradeRepository gradeRepository;
 
     @Override
     public View onCreateView(
@@ -31,6 +34,8 @@ public class HomeFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        gradeRepository= new GradeRepository(getActivity().getApplication());
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +52,7 @@ public class HomeFragment extends Fragment {
                         }else {
                             String semisterName= editText.getText().toString().trim();
                             Toast.makeText(getActivity(), ""+semisterName, Toast.LENGTH_SHORT).show();
+                            InsertSemister(semisterName);
                             dialog.dismiss();
                         }
                     }
@@ -58,6 +64,14 @@ public class HomeFragment extends Fragment {
 //        binding.buttonFirst.setOnClickListener(view1 -> NavHostFragment.findNavController(HomeFragment.this)
 //                .navigate(R.id.action_HomeFragment_to_SecondFragment));
     }
+
+    public void InsertSemister(String semisterName){
+        Semister semister= new Semister(semisterName, 0.00);
+        gradeRepository.InsertSemister(semister);
+
+    }
+
+
 
     @Override
     public void onDestroyView() {

@@ -19,7 +19,7 @@ public abstract class GradeDatabase extends RoomDatabase {
 
     public static volatile GradeDatabase INSTANCE;
 
-    static GradeDatabase getDatabase(final Context context) {
+    public static GradeDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             GradeDatabase.class,
