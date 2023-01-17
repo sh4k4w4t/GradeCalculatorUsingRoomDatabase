@@ -12,12 +12,17 @@ public class Semister {
     public String semisterName;
     public double semisterCredit;
 
-    public Semister() {
-    }
-
     public Semister(String semisterName, double semisterCredit) {
         this.semisterName = semisterName;
         this.semisterCredit = semisterCredit;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSemisterName() {

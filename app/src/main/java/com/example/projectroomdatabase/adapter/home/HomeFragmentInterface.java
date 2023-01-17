@@ -1,4 +1,4 @@
-package com.example.projectroomdatabase.adapter;
+package com.example.projectroomdatabase.adapter.home;
 
 import com.example.projectroomdatabase.model.Semister;
 

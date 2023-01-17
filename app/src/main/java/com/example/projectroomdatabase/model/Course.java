@@ -12,23 +12,18 @@ public class Course {
     public double courseCredit;
     public int semisterId;
 
-    public Course() {
-    }
-
-    public Course(int id, String courseName, double courseGpa, double courseCredit, int semisterId) {
-        this.id = id;
-        this.CourseName = courseName;
+    public Course(double courseGpa, double courseCredit, int semisterId) {
         this.courseGpa = courseGpa;
         this.courseCredit = courseCredit;
         this.semisterId = semisterId;
     }
 
-    public int getSemisterId() {
-        return semisterId;
+    public int getId() {
+        return id;
     }
 
-    public void setSemisterId(int semisterId) {
-        this.semisterId = semisterId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCourseName() {
@@ -53,5 +48,13 @@ public class Course {
 
     public void setCourseCredit(double courseCredit) {
         this.courseCredit = courseCredit;
+    }
+
+    public int getSemisterId() {
+        return semisterId;
+    }
+
+    public void setSemisterId(int semisterId) {
+        this.semisterId = semisterId;
     }
 }

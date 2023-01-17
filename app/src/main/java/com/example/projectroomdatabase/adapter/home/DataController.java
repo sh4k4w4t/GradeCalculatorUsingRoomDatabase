@@ -1,4 +1,6 @@
-package com.example.projectroomdatabase.adapter;
+package com.example.projectroomdatabase.adapter.home;
+
+import com.example.projectroomdatabase.model.Semister;
 
 public class DataController {
     public static DataController instance;
@@ -8,13 +10,25 @@ public class DataController {
         }
         return instance;
     }
-    HomeFragmentInterface homeFragmentInterface;
 
+
+    HomeFragmentInterface homeFragmentInterface;
+    Semister currentSemister;
+
+    //getter setter
     public HomeFragmentInterface getHomeFragmentInterface() {
         return homeFragmentInterface;
     }
 
     public void setHomeFragmentInterface(HomeFragmentInterface homeFragmentInterface) {
         this.homeFragmentInterface = homeFragmentInterface;
+    }
+
+    public Semister getCurrentSemister() {
+        return currentSemister;
+    }
+
+    public void setCurrentSemister(Semister currentSemister) {
+        this.currentSemister = currentSemister;
     }
 }

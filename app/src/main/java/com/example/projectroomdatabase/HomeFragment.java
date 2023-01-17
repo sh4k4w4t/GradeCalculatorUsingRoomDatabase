@@ -11,20 +11,18 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.projectroomdatabase.adapter.DataController;
-import com.example.projectroomdatabase.adapter.HomeFragmentInterface;
-import com.example.projectroomdatabase.adapter.HomeRecyclerAdapter;
+import com.example.projectroomdatabase.adapter.home.DataController;
+import com.example.projectroomdatabase.adapter.home.HomeFragmentInterface;
+import com.example.projectroomdatabase.adapter.home.HomeRecyclerAdapter;
 import com.example.projectroomdatabase.repository.GradeRepository;
 import com.example.projectroomdatabase.databinding.FragmentHomeBinding;
 import com.example.projectroomdatabase.model.Semister;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
-
-import kotlin.collections.ArrayDeque;
 
 public class HomeFragment extends Fragment implements HomeFragmentInterface {
 
@@ -91,6 +89,9 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface {
 
     @Override
     public void onSemisterItemClick(Semister semister) {
-        Toast.makeText(getActivity(), ""+semister.getSemisterName(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), ""+semister.getSemisterName(), Toast.LENGTH_SHORT).show();
+        dataController.setCurrentSemister(semister);
+        NavHostFragment.findNavController(HomeFragment.this)
+                .navigate(R.id.action_HomeFragment_to_SecondFragment);
     }
 }

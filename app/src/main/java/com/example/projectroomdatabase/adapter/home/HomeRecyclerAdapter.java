@@ -1,4 +1,4 @@
-package com.example.projectroomdatabase.adapter;
+package com.example.projectroomdatabase.adapter.home;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
