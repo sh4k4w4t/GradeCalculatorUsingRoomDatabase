@@ -1,9 +1,9 @@
-package com.example.projectroomdatabase.Repository;
+package com.example.projectroomdatabase.repository;
 
 import android.app.Application;
 import android.os.AsyncTask;
 
-import com.example.projectroomdatabase.DB.GradeDatabase;
+import com.example.projectroomdatabase.db.GradeDatabase;
 import com.example.projectroomdatabase.dao.CourseDao;
 import com.example.projectroomdatabase.dao.SemisterDao;
 import com.example.projectroomdatabase.model.Semister;

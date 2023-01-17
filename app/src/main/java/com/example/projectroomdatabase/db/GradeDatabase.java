@@ -1,4 +1,4 @@
-package com.example.projectroomdatabase.DB;
+package com.example.projectroomdatabase.db;
 
 import android.content.Context;
 

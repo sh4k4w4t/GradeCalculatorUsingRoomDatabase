@@ -11,12 +11,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.projectroomdatabase.Repository.GradeRepository;
+import com.example.projectroomdatabase.repository.GradeRepository;
 import com.example.projectroomdatabase.databinding.FragmentHomeBinding;
 import com.example.projectroomdatabase.model.Semister;
-import com.google.android.material.snackbar.Snackbar;
 
 public class HomeFragment extends Fragment {
 
