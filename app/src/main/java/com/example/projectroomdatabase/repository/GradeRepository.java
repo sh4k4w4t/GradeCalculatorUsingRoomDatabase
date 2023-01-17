@@ -8,9 +8,15 @@ import com.example.projectroomdatabase.dao.CourseDao;
 import com.example.projectroomdatabase.dao.SemisterDao;
 import com.example.projectroomdatabase.model.Semister;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 public class GradeRepository {
     private CourseDao courseDao;
     private SemisterDao semisterDao;
+
+    List<Semister> mySemisterList= new ArrayList<>();
 
     public GradeRepository(Application application){
         GradeDatabase database= GradeDatabase.getDatabase(application);
@@ -22,6 +28,21 @@ public class GradeRepository {
         new InsertTasks(semisterDao).execute(semister);
     }
 
+    public List<Semister> GetAllSemisters(){
+        try {
+            mySemisterList= new GelAllSemisterTask(semisterDao).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return mySemisterList;
+    }
+
+
+
+
+    //backgroud task
     private static class InsertTasks extends AsyncTask<Semister,Void,Void>{
         private SemisterDao dao;
         InsertTasks(SemisterDao semisterDao){
@@ -31,6 +52,18 @@ public class GradeRepository {
         protected Void doInBackground(Semister... semisters) {
             dao.InsertSemister(semisters[0]);
             return null;
+        }
+    }
+
+    private static class GelAllSemisterTask extends AsyncTask<Void,Void,List<Semister>>{
+        SemisterDao dao;
+        GelAllSemisterTask(SemisterDao semisterDao){
+            dao=semisterDao;
+        }
+
+        @Override
+        protected List<Semister> doInBackground(Void... voids) {
+            return dao.GetAllSemisters();
         }
     }
 

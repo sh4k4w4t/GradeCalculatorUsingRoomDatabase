@@ -13,8 +13,8 @@ import com.example.projectroomdatabase.model.Semister;
 
 @Database(entities = {Course.class, Semister.class}, version = 1, exportSchema = false)
 public abstract class GradeDatabase extends RoomDatabase {
-    public abstract CourseDao courseDao();
 
+    public abstract CourseDao courseDao();
     public abstract SemisterDao semisterDao();
 
     public static volatile GradeDatabase INSTANCE;
