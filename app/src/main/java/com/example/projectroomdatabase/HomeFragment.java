@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.projectroomdatabase.adapter.DataController;
+import com.example.projectroomdatabase.adapter.HomeFragmentInterface;
 import com.example.projectroomdatabase.adapter.HomeRecyclerAdapter;
 import com.example.projectroomdatabase.repository.GradeRepository;
 import com.example.projectroomdatabase.databinding.FragmentHomeBinding;
@@ -24,12 +26,13 @@ import java.util.Stack;
 
 import kotlin.collections.ArrayDeque;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeFragmentInterface {
 
     private FragmentHomeBinding binding;
     GradeRepository gradeRepository;
     HomeRecyclerAdapter adapter;
     List<Semister> semisterList= new ArrayList<>();
+    DataController dataController;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,11 +42,13 @@ public class HomeFragment extends Fragment {
 
         binding.homeRecyclerview.setHasFixedSize(true);
         binding.homeRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        for (int i=0; i<100; i++){
-            semisterList.add(new Semister("Semister "+i, 0.00));
-        }
+        semisterList= gradeRepository.GetAllSemisters();
         adapter= new HomeRecyclerAdapter(semisterList);
         binding.homeRecyclerview.setAdapter(adapter);
+
+        dataController= DataController.getInstance();
+        dataController.setHomeFragmentInterface(this);
+
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,13 +78,19 @@ public class HomeFragment extends Fragment {
 
     public void InsertSemister(String semisterName){
         Semister semister= new Semister(semisterName, 0.00);
+        semisterList.add(semister);
+        adapter.notifyDataSetChanged();
         gradeRepository.InsertSemister(semister);
-
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onSemisterItemClick(Semister semister) {
+        Toast.makeText(getActivity(), ""+semister.getSemisterName(), Toast.LENGTH_SHORT).show();
     }
 }

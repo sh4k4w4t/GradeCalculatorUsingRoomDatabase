@@ -44,12 +44,18 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
         return mySemisterList.size();
     }
 
-    public class viewholder extends RecyclerView.ViewHolder{
+    public class viewholder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView semisterName, semisterCredit;
         public viewholder(@NonNull View itemView) {
             super(itemView);
             semisterName= itemView.findViewById(R.id.tv_semister_name);
             semisterCredit= itemView.findViewById(R.id.tv_semister_credit);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            DataController.instance.getHomeFragmentInterface().onSemisterItemClick(mySemisterList.get(getAdapterPosition()));
         }
     }
 
