@@ -11,29 +11,39 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.projectroomdatabase.adapter.HomeRecyclerAdapter;
 import com.example.projectroomdatabase.repository.GradeRepository;
 import com.example.projectroomdatabase.databinding.FragmentHomeBinding;
 import com.example.projectroomdatabase.model.Semister;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+import kotlin.collections.ArrayDeque;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     GradeRepository gradeRepository;
+    HomeRecyclerAdapter adapter;
+    List<Semister> semisterList= new ArrayList<>();
 
     @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
-
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         gradeRepository= new GradeRepository(getActivity().getApplication());
+
+        binding.homeRecyclerview.setHasFixedSize(true);
+        binding.homeRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        for (int i=0; i<100; i++){
+            semisterList.add(new Semister("Semister "+i, 0.00));
+        }
+        adapter= new HomeRecyclerAdapter(semisterList);
+        binding.homeRecyclerview.setAdapter(adapter);
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,9 +68,7 @@ public class HomeFragment extends Fragment {
                 dialog.show();
             }
         });
-
-//        binding.buttonFirst.setOnClickListener(view1 -> NavHostFragment.findNavController(HomeFragment.this)
-//                .navigate(R.id.action_HomeFragment_to_SecondFragment));
+        return binding.getRoot();
     }
 
     public void InsertSemister(String semisterName){
@@ -69,12 +77,9 @@ public class HomeFragment extends Fragment {
 
     }
 
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
-
 }
