@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import com.example.projectroomdatabase.db.GradeDatabase;
 import com.example.projectroomdatabase.dao.CourseDao;
 import com.example.projectroomdatabase.dao.SemisterDao;
+import com.example.projectroomdatabase.model.Course;
 import com.example.projectroomdatabase.model.Semister;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class GradeRepository {
     private SemisterDao semisterDao;
 
     List<Semister> mySemisterList= new ArrayList<>();
+    List<Course> myCourseList= new ArrayList<>();
 
     public GradeRepository(Application application){
         GradeDatabase database= GradeDatabase.getDatabase(application);
@@ -39,6 +41,20 @@ public class GradeRepository {
         return mySemisterList;
     }
 
+    public void InsertCourseList(List<Course> courses){
+        new CourseListTasks(courseDao).execute(courses);
+    }
+
+    public List<Course> ListOfCourseBySemisterId(int semisterId){
+        try {
+            myCourseList= new GetAllCourseUsingSemister(courseDao).execute(semisterId).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return myCourseList;
+    }
 
 
 
@@ -64,6 +80,31 @@ public class GradeRepository {
         @Override
         protected List<Semister> doInBackground(Void... voids) {
             return dao.GetAllSemisters();
+        }
+    }
+
+    private static class CourseListTasks extends AsyncTask<List<Course>,Void,Void>{
+        CourseDao courseDao;
+        CourseListTasks(CourseDao dao){
+            courseDao= dao;
+        }
+        @Override
+        protected Void doInBackground(List<Course>... lists) {
+            courseDao.InsertCourseList(lists[0]);
+            return null;
+        }
+    }
+
+    private static class GetAllCourseUsingSemister extends AsyncTask<Integer,Void,List<Course>>{
+        CourseDao courseDao;
+
+        public GetAllCourseUsingSemister(CourseDao dao) {
+            this.courseDao = dao;
+        }
+
+        @Override
+        protected List<Course> doInBackground(Integer... integers) {
+            return courseDao.GetCoursesBySemesterId(integers[0]);
         }
     }
 
