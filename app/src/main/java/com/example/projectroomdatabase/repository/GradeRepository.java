@@ -26,8 +26,16 @@ public class GradeRepository {
         semisterDao= database.semisterDao();
     }
 
+//    public void InsertSemister(Semister semister){
+//        new InsertTasks(semisterDao).execute(semister);
+//    }
     public void InsertSemister(Semister semister){
-        new InsertTasks(semisterDao).execute(semister);
+        GradeDatabase.databaseExcutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                semisterDao.InsertSemister(semister);
+            }
+        });
     }
 
     public List<Semister> GetAllSemisters(){
@@ -41,8 +49,16 @@ public class GradeRepository {
         return mySemisterList;
     }
 
+//    public void InsertCourseList(List<Course> courses){
+//        new CourseListTasks(courseDao).execute(courses);
+//    }
     public void InsertCourseList(List<Course> courses){
-        new CourseListTasks(courseDao).execute(courses);
+        GradeDatabase.databaseExcutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                courseDao.InsertCourseList(courses);
+            }
+        });
     }
 
     public List<Course> ListOfCourseBySemisterId(int semisterId){
@@ -63,17 +79,17 @@ public class GradeRepository {
 
 
     //backgroud task
-    private static class InsertTasks extends AsyncTask<Semister,Void,Void>{
-        private SemisterDao dao;
-        InsertTasks(SemisterDao semisterDao){
-            dao=semisterDao;
-        }
-        @Override
-        protected Void doInBackground(Semister... semisters) {
-            dao.InsertSemister(semisters[0]);
-            return null;
-        }
-    }
+//    private static class InsertTasks extends AsyncTask<Semister,Void,Void>{
+//        private SemisterDao dao;
+//        InsertTasks(SemisterDao semisterDao){
+//            dao=semisterDao;
+//        }
+//        @Override
+//        protected Void doInBackground(Semister... semisters) {
+//            dao.InsertSemister(semisters[0]);
+//            return null;
+//        }
+//    }
 
     private static class GelAllSemisterTask extends AsyncTask<Void,Void,List<Semister>>{
         SemisterDao dao;
@@ -87,17 +103,17 @@ public class GradeRepository {
         }
     }
 
-    private static class CourseListTasks extends AsyncTask<List<Course>,Void,Void>{
-        CourseDao courseDao;
-        CourseListTasks(CourseDao dao){
-            courseDao= dao;
-        }
-        @Override
-        protected Void doInBackground(List<Course>... lists) {
-            courseDao.InsertCourseList(lists[0]);
-            return null;
-        }
-    }
+//    private static class CourseListTasks extends AsyncTask<List<Course>,Void,Void>{
+//        CourseDao courseDao;
+//        CourseListTasks(CourseDao dao){
+//            courseDao= dao;
+//        }
+//        @Override
+//        protected Void doInBackground(List<Course>... lists) {
+//            courseDao.InsertCourseList(lists[0]);
+//            return null;
+//        }
+//    }
 
     private static class GetAllCourseUsingSemister extends AsyncTask<Integer,Void,List<Course>>{
         CourseDao courseDao;
