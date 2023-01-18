@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,9 +50,6 @@ public class CourseFragment extends Fragment {
         dataController = DataController.getInstance();
 
         repository= new GradeRepository(getActivity().getApplication());
-        allCourses= repository.ListOfCourseBySemisterId(dataController.getCurrentSemister().getId());
-
-        Toast.makeText(getActivity(), "Semister: " + dataController.getCurrentSemister().getSemisterName(), Toast.LENGTH_SHORT).show();
 
         saveButton = binding.button;
         calculateDataTextView = binding.textView3;
@@ -59,10 +57,29 @@ public class CourseFragment extends Fragment {
         creditEditText = binding.editTextTextPersonName;
         courseRecyclerview = binding.courseRecyclerview;
 
+        allCourses= repository.ListOfCourseBySemisterId(dataController.getCurrentSemister().getId());
+        if (allCourses.size() > 0) {
+            CalculateCGPAFromList(allCourses);
+        }
+        Toast.makeText(getActivity(), "Semister: " + dataController.getCurrentSemister().getSemisterName(), Toast.LENGTH_SHORT).show();
+
         courseRecyclerview.setHasFixedSize(true);
         courseRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new CourseRecycleViewAdapter(allCourses);
         courseRecyclerview.setAdapter(adapter);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                DeleteCourse(viewHolder.getAdapterPosition());
+            }
+        }).attachToRecyclerView(courseRecyclerview);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +121,17 @@ public class CourseFragment extends Fragment {
         return binding.getRoot();
     }
 
+    private void CalculateCGPAFromList(List<Course> allCourses) {
+        for (int i = 0; i < allCourses.size(); i++) {
+            Course temp= allCourses.get(i);
+            totalCredit+=temp.getCourseCredit();
+            productOfGPAandCredit +=temp.getCourseCredit()*temp.getCourseGpa();
+
+            double cgpa = productOfGPAandCredit / totalCredit;
+            calculateDataTextView.setText(String.format("CGPA: %.2f", cgpa));
+        }
+    }
+
     private void CalculateCGPA(String credit, String gpa) {
         double gpaValue = Double.parseDouble(gpa);
         double creditValue = Double.parseDouble(credit);
@@ -115,6 +143,13 @@ public class CourseFragment extends Fragment {
 
         Course course = new Course(gpaValue, creditValue, dataController.getCurrentSemister().getId());
         allCourses.add(course);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void DeleteCourse(int position) {
+        Course course= allCourses.get(position);
+        repository.DeleteCourse(course);
+        allCourses.remove(course);
         adapter.notifyDataSetChanged();
     }
 

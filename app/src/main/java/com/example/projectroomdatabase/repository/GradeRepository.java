@@ -56,6 +56,10 @@ public class GradeRepository {
         return myCourseList;
     }
 
+    public void DeleteCourse(Course course){
+        new CourseDeleteTask(courseDao).execute(course);
+    }
+
 
 
     //backgroud task
@@ -108,4 +112,17 @@ public class GradeRepository {
         }
     }
 
+    private static class CourseDeleteTask extends AsyncTask<Course, Void,Void>{
+        CourseDao courseDao;
+
+        public CourseDeleteTask(CourseDao courseDao) {
+            this.courseDao = courseDao;
+        }
+
+        @Override
+        protected Void doInBackground(Course... courses) {
+            courseDao.DeleteCourse(courses[0]);
+            return null;
+        }
+    }
 }
